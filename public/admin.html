@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مدیریت سفارش‌ها</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .admin { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+    .login-card { max-width: 380px; margin: 60px auto; background: var(--surface);
+      padding: 30px 24px; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; }
+    .stats { display: flex; gap: 12px; margin: 16px 0 8px; flex-wrap: wrap; }
+    .stat { flex: 1 1 140px; background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; box-shadow: var(--shadow-sm); }
+    .stat .n { font-size: 1.8rem; font-weight: 700; color: var(--brand); }
+    .stat .l { font-size: 0.82rem; color: var(--ink-soft); }
+    .tabs { display: flex; gap: 8px; margin: 20px 0 16px; }
+    .tabs button { flex: 1; padding: 12px; border: 1.5px solid var(--line); background: var(--surface);
+      border-radius: var(--radius-sm); font-weight: 700; font-family: inherit; color: var(--ink-soft); }
+    .tabs button.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; }
+    .toolbar button { flex: 1; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .guest-head { display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 8px; }
+    .guest-head .gname { font-weight: 700; font-size: 1.05rem; }
+    .guest-head .gtime { font-size: 0.75rem; color: var(--ink-faint); }
+    .guest-items { list-style: none; margin: 0; padding: 0; }
+    .guest-items li { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.92rem; }
+    .guest-items .qbadge { background: var(--brand-tint); color: var(--brand-strong);
+      border-radius: 999px; padding: 1px 10px; font-weight: 700; font-size: 0.82rem; }
+    .gnote { margin-top: 8px; padding: 8px 10px; background: var(--surface-2);
+      border-radius: 10px; font-size: 0.85rem; color: var(--ink-soft); }
+    .sum-cat { font-weight: 700; color: var(--brand-strong); margin: 18px 0 8px; font-size: 1.05rem;
+      border-bottom: 2px solid var(--brand-tint); padding-bottom: 4px; }
+    .sum-row { display: flex; justify-content: space-between; padding: 6px 4px;
+      border-bottom: 1px dashed var(--line); font-size: 0.95rem; }
+    .sum-row .q { font-weight: 700; color: var(--brand); }
+    .err { color: var(--danger); font-size: 0.85rem; margin-top: 10px; min-height: 1.2em; }
+    @media print {
+      .noprint { display: none !important; }
+      body, .app, .admin { background: #fff; }
+      .card, .stat { box-shadow: none; border-color: #ccc; }
+      .section-print { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" style="max-width:none">
+    <header class="topbar noprint">
+      <h1>مدیریت سفارش‌ها</h1>
+      <p class="sub">گزارش مخصوص رستوران</p>
+    </header>
+
+    <!-- ورود -->
+    <div id="login" class="login-card">
+      <div class="emoji" style="font-size:2.4rem">🔒</div>
+      <h2 style="margin:8px 0 18px">ورود مدیر</h2>
+      <form id="login-form">
+        <div class="field">
+          <input id="pw" type="password" placeholder="رمز عبور" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary" type="submit" style="margin-top:14px">ورود</button>
+        <div class="err" id="login-err"></div>
+      </form>
+    </div>
+
+    <!-- گزارش -->
+    <div id="report" class="admin hidden">
+      <div class="stats">
+        <div class="stat"><div class="n" id="stat-guests">۰</div><div class="l">مهمان</div></div>
+        <div class="stat"><div class="n" id="stat-items">۰</div><div class="l">مجموع اقلام</div></div>
+        <div class="stat"><div class="n" id="stat-time">—</div><div class="l">به‌روزرسانی</div></div>
+      </div>
+
+      <div class="toolbar noprint">
+        <button class="btn btn-ghost" id="btn-refresh">↻ به‌روزرسانی</button>
+        <button class="btn btn-ghost" id="btn-print">🖨️ چاپ</button>
+        <button class="btn btn-ghost" id="btn-copy">📋 کپی متن</button>
+      </div>
+
+      <div class="tabs noprint">
+        <button data-tab="summary" class="active">جمع‌بندی اقلام</button>
+        <button data-tab="guests">سفارش هر مهمان</button>
+      </div>
+
+      <section id="tab-summary" class="section-print"></section>
+      <section id="tab-guests" class="section-print hidden"></section>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

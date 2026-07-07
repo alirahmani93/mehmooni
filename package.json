@@ -1,0 +1,13 @@
+{
+  "name": "goodbyparty",
+  "version": "1.0.0",
+  "description": "سایت پیش‌سفارش شام مهمانی خداحافظی",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

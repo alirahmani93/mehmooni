@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#97381f">
+  <title>سفارش شام مهمانی</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- سربرگ -->
+    <header class="topbar">
+      <h1 id="party-title">مهمانی خداحافظی</h1>
+      <p class="sub" id="party-sub">سفارش شام خود را از قبل ثبت کنید</p>
+      <div class="who hidden" id="who">
+        <span>مهمان: <b id="who-name"></b></span>
+        <button id="change-name">تغییر نام</button>
+      </div>
+    </header>
+
+    <!-- صفحه‌ی ورود نام -->
+    <section class="gate" id="screen-gate">
+      <div class="gate-card">
+        <div class="emoji">🍽️</div>
+        <h2>خوش آمدید</h2>
+        <p>برای ثبت سفارش، لطفاً نام و نام خانوادگی خود را وارد کنید.</p>
+        <form id="name-form">
+          <div class="field">
+            <label for="name-input">نام و نام خانوادگی</label>
+            <input id="name-input" type="text" autocomplete="name" placeholder="مثلاً: علی رضایی" required>
+          </div>
+          <button class="btn btn-primary" type="submit" style="margin-top:18px">مشاهده‌ی منو</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- صفحه‌ی منو -->
+    <section class="screen hidden" id="screen-menu">
+      <div class="loading" id="menu-loading">در حال بارگذاری منو…</div>
+      <nav class="catnav hidden" id="catnav"></nav>
+      <div id="menu-list"></div>
+    </section>
+
+    <!-- صفحه‌ی موفقیت -->
+    <section class="screen hidden" id="screen-done">
+      <div class="done">
+        <div class="check">✓</div>
+        <h2>سفارش شما ثبت شد</h2>
+        <p><b id="done-name"></b> عزیز، سفارش شما با موفقیت ذخیره شد.<br>تا شب مهمانی می‌توانید آن را ویرایش کنید.</p>
+        <button class="btn btn-primary" id="edit-again">ویرایش سفارش</button>
+        <button class="btn btn-ghost" id="done-menu" style="margin-top:10px">بازگشت به منو</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- نوار پایین سبد -->
+  <div class="cartbar hidden" id="cartbar">
+    <div class="cartbar-inner">
+      <button class="btn btn-primary" id="view-order">
+        <span>مشاهده و تأیید سفارش</span>
+        <span class="badge" id="cart-count">۰</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- شیت مرور و تأیید سفارش -->
+  <div class="sheet-backdrop" id="sheet-backdrop">
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="مرور سفارش">
+      <div class="sheet-grip"></div>
+      <h2>سفارش شما</h2>
+      <div id="sheet-lines"></div>
+      <div class="note-field" id="note-wrap">
+        <label for="note-input">توضیح برای آشپزخانه (اختیاری) — مثلاً حساسیت غذایی یا سلیقه‌ی خاص</label>
+        <textarea id="note-input" maxlength="500" placeholder="اختیاری…"></textarea>
+      </div>
+      <div class="reminder hidden" id="reminder"></div>
+      <button class="btn btn-success" id="confirm-order">ثبت نهایی سفارش</button>
+      <button class="btn btn-ghost" id="close-sheet" style="margin-top:10px">ادامه‌ی انتخاب</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

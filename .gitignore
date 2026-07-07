@@ -1,0 +1,6 @@
+node_modules/
+data/orders.json
+data/orders.json.tmp
+data/backups/
+.env
+*.log

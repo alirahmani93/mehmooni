@@ -1,0 +1,15 @@
+# Caddy به‌طور خودکار برای این دامنه گواهی HTTPS (Let's Encrypt) می‌گیرد.
+# پیش‌نیازها:
+#   ۱) رکورد DNS نوع A برای techro.ir به IP این سرور اشاره کند.
+#   ۲) پورت‌های ۸۰ و ۴۴۳ روی سرور باز باشند.
+
+techro.ir {
+	encode gzip zstd
+	reverse_proxy app:4123
+}
+
+# اگر می‌خواهید www هم کار کند، ابتدا رکورد DNS برای www.techro.ir بسازید،
+# سپس خط زیر را از حالت کامنت خارج کنید:
+# www.techro.ir {
+# 	redir https://techro.ir{uri} permanent
+# }

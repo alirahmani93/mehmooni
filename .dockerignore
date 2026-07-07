@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+docs
+Dockerfile
+.dockerignore
+docker-compose.yml
+Caddyfile
+.env
+.env.example
+# داده‌های زمان اجرا نباید در تصویر باشند (منو، menu.json، حفظ می‌شود)
+data/orders.json
+data/orders.json.tmp
+data/backups

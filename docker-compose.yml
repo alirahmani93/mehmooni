@@ -1,0 +1,35 @@
+services:
+  # ---- اپلیکیشن Node ----
+  app:
+    build: .
+    image: goodbyparty:latest
+    restart: unless-stopped
+    environment:
+      PORT: 4123
+      # رمز مدیریت را در فایل .env تعیین کنید (اجباری)
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?لطفاً ADMIN_PASSWORD را در فایل .env تعیین کنید}
+      PARTY_TITLE: ${PARTY_TITLE:-مهمانی خداحافظی}
+      PARTY_SUBTITLE: ${PARTY_SUBTITLE:-سفارش شام خود را از قبل ثبت کنید}
+    volumes:
+      # سفارش‌ها و منو روی دیسک میزبان می‌مانند (ماندگاری داده)
+      - ./data:/app/data
+    expose:
+      - "4123"
+
+  # ---- پراکسی معکوس Caddy با HTTPS خودکار ----
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data       # گواهی‌های TLS اینجا نگه داشته می‌شوند
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:
+  caddy_config:
