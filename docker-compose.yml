@@ -1,6 +1,6 @@
 services:
   # ---- اپلیکیشن Node ----
-  # فقط روی 127.0.0.1 منتشر می‌شود؛ Nginx میزبان آن را برای techro.ir پراکسی می‌کند.
+  # فقط روی 127.0.0.1 منتشر می‌شود؛ Nginx میزبان آن را برای menu.vazgroup.ir پراکسی می‌کند.
   app:
     build: .
     image: goodbyparty:latest

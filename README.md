@@ -62,20 +62,20 @@ ADMIN_PASSWORD='یک-رمز-قوی' PARTY_TITLE='بدرود امیر' node serve
 > با دیسک ماندگار باشد (VPS یا رایانه‌ی خودتان) — نه محیط بدون‌سرور (serverless) که
 > فایل در آن پاک می‌شود.
 
-## استقرار روی سرور با Docker + Nginx و دامنه‌ی techro.ir
+## استقرار روی سرور با Docker + Nginx و دامنه‌ی menu.vazgroup.ir
 
 اپ داخل Docker روی `127.0.0.1:4123` اجرا می‌شود (فقط از خود سرور در دسترس است) و
-**Nginx میزبان** آن را برای `techro.ir` پراکسی می‌کند و HTTPS را با certbot می‌گیرد.
+**Nginx میزبان** آن را برای `menu.vazgroup.ir` پراکسی می‌کند و HTTPS را با certbot می‌گیرد.
 این روش وقتی مناسب است که پورت‌های ۸۰/۴۴۳ سرور از قبل توسط Nginx اشغال شده‌اند.
 
 ### گام ۱ — DNS
-در پنل دامنه‌ی `techro.ir` یک رکورد **A** بسازید که به **IP سرور** اشاره کند:
+در پنل دامنه‌ی `vazgroup.ir` یک رکورد **A** برای زیردامنه‌ی `menu` بسازید که به **IP سرور** اشاره کند:
 
 ```
-techro.ir.   A   <IP-سرور-شما>
+menu.vazgroup.ir.   A   <IP-سرور-شما>
 ```
 
-منتظر بمانید تا DNS منتشر شود (`dig techro.ir` باید IP سرور را نشان دهد).
+منتظر بمانید تا DNS منتشر شود (`dig menu.vazgroup.ir` باید IP سرور را نشان دهد).
 
 ### گام ۲ — اجرای اپ با Docker
 ```bash
@@ -91,17 +91,16 @@ docker compose up -d --build
 > `config.js` و فایل Nginx یک پورت آزاد دیگر بگذارید (مثلاً `4187`).
 
 ### گام ۳ — تنظیم Nginx میزبان
-فایل آماده در `deploy/nginx/techro.ir` است:
+فایل آماده در `deploy/nginx/menu.vazgroup.ir` است:
 
 ```bash
-sudo cp deploy/nginx/techro.ir /etc/nginx/sites-available/techro.ir
-sudo ln -s /etc/nginx/sites-available/techro.ir /etc/nginx/sites-enabled/
+sudo cp deploy/nginx/menu.vazgroup.ir /etc/nginx/sites-available/menu.vazgroup.ir
+sudo ln -s /etc/nginx/sites-available/menu.vazgroup.ir /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
-sudo certbot --nginx -d techro.ir -d www.techro.ir   # افزودن خودکار HTTPS
+sudo certbot --nginx -d menu.vazgroup.ir   # افزودن خودکار HTTPS
 ```
 
-همین. سایت روی **https://techro.ir** و صفحه‌ی مدیریت روی **https://techro.ir/admin**
-بالا می‌آید. (اگر رکورد DNS برای `www` ندارید، آن را از دستور certbot حذف کنید.)
+همین. سایت روی **https://menu.vazgroup.ir** و صفحه‌ی مدیریت روی **https://menu.vazgroup.ir/admin** بالا می‌آید.
 
 ### دستورهای مفید
 
@@ -121,9 +120,6 @@ docker compose up -d --build    # اعمال تغییرات کد
 ```bash
 cp data/orders.json ~/backup-orders-$(date +%F).json
 ```
-
-> اگر بعداً خواستید www هم کار کند، در `Caddyfile` بلوک `www.techro.ir` را از حالت
-> کامنت خارج کنید (پس از ساختن رکورد DNS برای www) و `docker compose restart caddy`.
 
 ## ساختار پروژه
 
