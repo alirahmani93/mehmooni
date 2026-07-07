@@ -44,9 +44,28 @@ async function loadMenu() {
   const res = await fetch('/api/menu');
   const data = await res.json();
   state.menu = data;
-  $('#party-title').textContent = data.title;
-  $('#party-sub').textContent = data.subtitle;
-  document.title = data.title + ' — سفارش شام';
+  // عنوان: اگر خالی باشد، خط عنوان را پنهان می‌کنیم و فقط زیرعنوان می‌ماند
+  const title = (data.title || '').trim();
+  const titleEl = $('#party-title');
+  if (title) {
+    titleEl.textContent = title;
+    titleEl.style.display = '';
+    document.title = title + ' — سفارش شام';
+  } else {
+    titleEl.style.display = 'none';
+    document.title = 'سفارش شام';
+  }
+  // زیرعنوان: با «\n» (یا خط جدید) به چند خط تقسیم می‌شود
+  const subEl = $('#party-sub');
+  subEl.textContent = '';
+  (data.subtitle || '')
+    .split(/\\n|\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .forEach((part, i) => {
+      if (i) subEl.appendChild(document.createElement('br'));
+      subEl.appendChild(document.createTextNode(part));
+    });
   for (const cat of data.categories) {
     for (const it of cat.items)
       state.itemById.set(it.id, { ...it, categoryName: cat.name, categoryId: cat.id, categoryEn: cat.en });

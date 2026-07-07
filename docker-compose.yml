@@ -9,7 +9,8 @@ services:
       PORT: 4123
       # رمز مدیریت را در فایل .env تعیین کنید (اجباری)
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?لطفاً ADMIN_PASSWORD را در فایل .env تعیین کنید}
-      PARTY_TITLE: ${PARTY_TITLE:-مهمانی خداحافظی}
+      # PARTY_TITLE اختیاری است؛ اگر تعیین نشود، خط عنوان نمایش داده نمی‌شود.
+      # برای نمایش عنوان، آن را در .env تعریف کنید.
       PARTY_SUBTITLE: ${PARTY_SUBTITLE:-سفارش شام خود را از قبل ثبت کنید}
     volumes:
       # سفارش‌ها و منو روی دیسک میزبان می‌مانند (ماندگاری داده)
