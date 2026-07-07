@@ -1,5 +1,6 @@
 services:
   # ---- اپلیکیشن Node ----
+  # فقط روی 127.0.0.1 منتشر می‌شود؛ Nginx میزبان آن را برای techro.ir پراکسی می‌کند.
   app:
     build: .
     image: goodbyparty:latest
@@ -13,23 +14,6 @@ services:
     volumes:
       # سفارش‌ها و منو روی دیسک میزبان می‌مانند (ماندگاری داده)
       - ./data:/app/data
-    expose:
-      - "4123"
-
-  # ---- پراکسی معکوس Caddy با HTTPS خودکار ----
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data       # گواهی‌های TLS اینجا نگه داشته می‌شوند
-      - caddy_config:/config
-    depends_on:
-      - app
-
-volumes:
-  caddy_data:
-  caddy_config:
+      # فقط از روی خود سرور (localhost) قابل دسترسی است، نه از بیرون
+      - "127.0.0.1:4123:4123"

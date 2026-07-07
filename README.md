@@ -62,10 +62,11 @@ ADMIN_PASSWORD='یک-رمز-قوی' PARTY_TITLE='بدرود امیر' node serve
 > با دیسک ماندگار باشد (VPS یا رایانه‌ی خودتان) — نه محیط بدون‌سرور (serverless) که
 > فایل در آن پاک می‌شود.
 
-## استقرار روی سرور با Docker و دامنه‌ی techro.ir
+## استقرار روی سرور با Docker + Nginx و دامنه‌ی techro.ir
 
-سایت با Docker Compose اجرا می‌شود: یک کانتینر برای اپ (Node) و یک کانتینر
-**Caddy** که به‌صورت **خودکار گواهی HTTPS** (Let's Encrypt) برای `techro.ir` می‌گیرد.
+اپ داخل Docker روی `127.0.0.1:4123` اجرا می‌شود (فقط از خود سرور در دسترس است) و
+**Nginx میزبان** آن را برای `techro.ir` پراکسی می‌کند و HTTPS را با certbot می‌گیرد.
+این روش وقتی مناسب است که پورت‌های ۸۰/۴۴۳ سرور از قبل توسط Nginx اشغال شده‌اند.
 
 ### گام ۱ — DNS
 در پنل دامنه‌ی `techro.ir` یک رکورد **A** بسازید که به **IP سرور** اشاره کند:
@@ -76,9 +77,7 @@ techro.ir.   A   <IP-سرور-شما>
 
 منتظر بمانید تا DNS منتشر شود (`dig techro.ir` باید IP سرور را نشان دهد).
 
-### گام ۲ — روی سرور
-مطمئن شوید Docker و Docker Compose نصب‌اند و پورت‌های ۸۰ و ۴۴۳ باز هستند، سپس:
-
+### گام ۲ — اجرای اپ با Docker
 ```bash
 git clone <آدرس-مخزن> goodbyparty && cd goodbyparty
 cp .env.example .env
@@ -86,8 +85,23 @@ nano .env          # ADMIN_PASSWORD را به یک رمز قوی تغییر ده
 docker compose up -d --build
 ```
 
-همین. Caddy خودش گواهی HTTPS را می‌گیرد و سایت روی **https://techro.ir** بالا می‌آید.
-صفحه‌ی مدیریت: **https://techro.ir/admin**
+بررسی: `curl http://127.0.0.1:4123/api/menu` باید پاسخ دهد.
+
+> اگر پورت `4123` روی سرور شما هم اشغال است، در `docker-compose.yml` (بخش `ports`)،
+> `config.js` و فایل Nginx یک پورت آزاد دیگر بگذارید (مثلاً `4187`).
+
+### گام ۳ — تنظیم Nginx میزبان
+فایل آماده در `deploy/nginx/techro.ir` است:
+
+```bash
+sudo cp deploy/nginx/techro.ir /etc/nginx/sites-available/techro.ir
+sudo ln -s /etc/nginx/sites-available/techro.ir /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d techro.ir -d www.techro.ir   # افزودن خودکار HTTPS
+```
+
+همین. سایت روی **https://techro.ir** و صفحه‌ی مدیریت روی **https://techro.ir/admin**
+بالا می‌آید. (اگر رکورد DNS برای `www` ندارید، آن را از دستور certbot حذف کنید.)
 
 ### دستورهای مفید
 

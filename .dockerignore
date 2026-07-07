@@ -3,10 +3,10 @@ npm-debug.log
 .git
 .gitignore
 docs
+deploy
 Dockerfile
 .dockerignore
 docker-compose.yml
-Caddyfile
 .env
 .env.example
 # داده‌های زمان اجرا نباید در تصویر باشند (منو، menu.json، حفظ می‌شود)
